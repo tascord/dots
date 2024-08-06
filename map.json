@@ -1,0 +1,13 @@
+{
+    "files": {
+        "i3": "~/.config/i3",
+        "polybar": "~/.config/polybar",
+        "scripts": "~/.config/scripts",
+        "fish_functions": "~/.config/fish/functions",
+        "kitty": "~/.config/kitty"
+    },
+    "post_install": [
+        "chmod +x ~/.scripts/*",
+        "fc-cache -fv"
+    ]
+}
