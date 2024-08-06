@@ -4,10 +4,13 @@
         "polybar": "~/.config/polybar",
         "scripts": "~/.config/scripts",
         "fish_functions": "~/.config/fish/functions",
-        "kitty": "~/.config/kitty"
+        "kitty": "~/.config/kitty",
+        "nvim": "~/.config/nvim",
+        "fonts": "~/.local/share/fonts"
     },
     "post_install": [
         "chmod +x ~/.scripts/*",
-        "fc-cache -fv"
+        "fc-cache -fv",
+        "echo You'll want to :PlugInstall"
     ]
 }

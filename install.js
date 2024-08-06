@@ -1,4 +1,4 @@
-const { mkdirSync } = require('fs');
+const { existsSync } = require('fs');
 const { files, post_install } = require('./map.json');
 const { spawnSync } = require('child_process');
 
@@ -7,12 +7,12 @@ for (e of Object.entries(files)) {
 
     try {
         const path = `./files/${name}`;
-        mkdirSync(location).catch(() => { });
-        spawnSync('cp', ['-rT', path, location]);
-
+        spawnSync(`mkdir -p ${location}`, { shell: true });
+        spawnSync(`cp ${path}/* ${location}`, { shell: true });
         console.log(`Installed ${name}! (${path} -> ${location})`);
     } catch (e) {
         console.error(`Failed to install ${name}! (${location})`);
+        console.log(e);
     }
 }
 
