@@ -7,7 +7,8 @@
         "kitty": "~/.config/kitty",
         "nvim": "~/.config/nvim",
         "fonts": "~/.local/share/fonts",
-        "wal_templates": "~/.config/wal/templates"
+        "wal_templates": "~/.config/wal/templates",
+        "dust": "~/.config/dunst"
     },
     "post_install": [
         "chmod +x ~/.scripts/*",
