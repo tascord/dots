@@ -8,7 +8,9 @@
         "nvim": "~/.config/nvim",
         "fonts": "~/.local/share/fonts",
         "wal_templates": "~/.config/wal/templates",
-        "dust": "~/.config/dunst"
+        "dunst": "~/.config/dunst",
+        "hypr": "~/.config/hypr/",
+        "hyprpanel": "~/.config/hyprpanel/"
     },
     "post_install": [
         "chmod +x ~/.scripts/*",

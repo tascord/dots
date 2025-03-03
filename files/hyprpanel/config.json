@@ -1,0 +1,102 @@
+{
+  "bar.customModules.updates.pollingInterval": 1440000,
+  "theme.font.name": "Maple Mono",
+  "theme.font.label": "Maple Mono",
+  "theme.bar.transparent": true,
+  "menus.media.hideAuthor": false,
+  "menus.media.hideAlbum": false,
+  "menus.media.displayTime": false,
+  "bar.scrollSpeed": 5,
+  "theme.bar.buttons.enableBorders": true,
+  "theme.bar.buttons.borderSize": "1px",
+  "theme.bar.shadowMargins": "0px 0px 4px 0px",
+  "theme.bar.outer_spacing": "15px",
+  "theme.bar.buttons.y_margins": "10px",
+  "menus.clock.time.hideSeconds": true,
+  "menus.clock.weather.location": "Melbourne",
+  "menus.clock.weather.unit": "metric",
+  "bar.media.show_active_only": true,
+  "theme.bar.buttons.media.enableBorder": false,
+  "bar.clock.format": "%a %b %d  %I:%M %p",
+  "bar.network.showWifiInfo": true,
+  "bar.network.truncation_size": 20,
+  "theme.bar.buttons.network.enableBorder": false,
+  "bar.layouts": {
+    "0": {
+      "left": [
+        "dashboard",
+        "workspaces",
+        "windowtitle"
+      ],
+      "middle": [
+        "media"
+      ],
+      "right": [
+        "volume",
+        "network",
+        "bluetooth",
+        "systray",
+        "clock",
+        "notifications"
+      ]
+    },
+    "1": {
+      "left": [
+        "dashboard",
+        "workspaces",
+        "windowtitle"
+      ],
+      "middle": [
+        "media"
+      ],
+      "right": [
+        "volume",
+        "clock",
+        "notifications"
+      ]
+    },
+    "2": {
+      "left": [
+        "dashboard",
+        "workspaces",
+        "windowtitle"
+      ],
+      "middle": [
+        "media"
+      ],
+      "right": [
+        "volume",
+        "clock",
+        "notifications"
+      ]
+    }
+  },
+  "wallpaper.pywal": true,
+  "wallpaper.image": "/home/flora/.config/background.jpg",
+  "wallpaper.enable": false,
+  "theme.bar.menus.monochrome": false,
+  "theme.matugen": true,
+  "theme.bar.enableShadow": false,
+  "bar.launcher.icon": "💮",
+  "theme.matugen_settings.mode": "dark",
+  "theme.matugen_settings.scheme_type": "fidelity",
+  "theme.matugen_settings.variation": "standard_3",
+  "theme.font.style": "normal",
+  "theme.osd.enable": true,
+  "menus.power.showLabel": false,
+  "menus.dashboard.stats.enable_gpu": true,
+  "menus.dashboard.shortcuts.left.shortcut1.tooltip": "Google Chrome",
+  "menus.dashboard.shortcuts.left.shortcut1.command": "google-chrome-stable",
+  "menus.dashboard.shortcuts.left.shortcut1.icon": "󰊯",
+  "menus.dashboard.shortcuts.right.shortcut3.command": "",
+  "menus.dashboard.directories.enabled": false,
+  "menus.dashboard.shortcuts.right.shortcut3.tooltip": "",
+  "menus.dashboard.shortcuts.right.shortcut3.icon": "",
+  "menus.dashboard.shortcuts.right.shortcut1.tooltip": "",
+  "menus.dashboard.shortcuts.right.shortcut1.command": "",
+  "menus.dashboard.shortcuts.right.shortcut1.icon": "",
+  "notifications.showActionsOnHover": true,
+  "notifications.position": "top right",
+  "menus.dashboard.powermenu.avatar.image": "/home/flora/.face.icon",
+  "menus.dashboard.shortcuts.enabled": false
+}
