@@ -1,14 +1,12 @@
 {
     "files": {
         "i3": "~/.config/i3",
-        "polybar": "~/.config/polybar",
         "scripts": "~/.config/scripts",
         "fish_functions": "~/.config/fish/functions",
         "kitty": "~/.config/kitty",
         "nvim": "~/.config/nvim",
         "fonts": "~/.local/share/fonts",
         "wal_templates": "~/.config/wal/templates",
-        "dunst": "~/.config/dunst",
         "hypr": "~/.config/hypr/",
         "hyprpanel": "~/.config/hyprpanel/"
     },
