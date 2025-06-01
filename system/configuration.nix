@@ -16,10 +16,12 @@
   networking.networkmanager.enable = true;
   time.timeZone = "Australia/Melbourne";
   i18n.defaultLocale = "en_AU.UTF-8";
-  i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [ fcitx5-mozc fcitx5-gtk ];
-    ibus.engines = with pkgs.ibus-engines; [ mozc ];
+  i18n.inputMethod.ibus = { engines = with pkgs.ibus-engines; [ mozc ]; };
+  fonts.packages = with pkgs; [ noto-fonts-cjk-sans ];
+  environment.variables = {
+    GTK_IM_MODULE = "ibus";
+    QT_IM_MODULE = "ibus";
+    XMODIFIERS = "@im=ibus";
   };
 
   console = {
@@ -71,6 +73,7 @@
     devenv
     stdenv
     maple-mono.NF
+    ibus-engines.mozc
   ];
 
   services.openssh.enable = true;

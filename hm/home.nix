@@ -25,7 +25,6 @@ in {
     vscode
     hyprpaper
     fcitx5-mozc
-    fcitx5-configtool
     fcitx5-gtk
     hyfetch
     pavucontrol
