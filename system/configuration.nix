@@ -2,12 +2,20 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [ ./hardware-configuration.nix ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nixpkgs.config.allowUnfree = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -16,12 +24,21 @@
   networking.networkmanager.enable = true;
   time.timeZone = "Australia/Melbourne";
   i18n.defaultLocale = "en_AU.UTF-8";
-  i18n.inputMethod.ibus = { engines = with pkgs.ibus-engines; [ mozc ]; };
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.waylandFrontend = true;
+    fcitx5.addons = with pkgs; [
+      fcitx5-gtk
+      fcitx5-configtool
+      fcitx5-with-addons
+      fcitx5-mozc
+    ];
+  };
+
   fonts.packages = with pkgs; [ noto-fonts-cjk-sans ];
   environment.variables = {
-    GTK_IM_MODULE = "ibus";
-    QT_IM_MODULE = "ibus";
-    XMODIFIERS = "@im=ibus";
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
   };
 
   console = {
@@ -34,10 +51,17 @@
     enable = true;
     xkb.layout = "us";
     xkb.options = "eurosign:e,caps:escape";
-    desktopManager = { xterm.enable = false; };
+    desktopManager = {
+      xterm.enable = false;
+    };
     windowManager.i3 = {
       enable = true;
-      extraPackages = with pkgs; [ dmenu i3status i3lock i3blocks ];
+      extraPackages = with pkgs; [
+        dmenu
+        i3status
+        i3lock
+        i3blocks
+      ];
     };
   };
 
@@ -73,7 +97,6 @@
     devenv
     stdenv
     maple-mono.NF
-    ibus-engines.mozc
   ];
 
   services.openssh.enable = true;
