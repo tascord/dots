@@ -16,6 +16,8 @@
     "nix-command"
     "flakes"
   ];
+
+  nix.settings.trusted-users = [ "root" "flora" ];
   nixpkgs.config.allowUnfree = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -39,6 +41,8 @@
   environment.variables = {
     GTK_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
+    XMODIFIERS = "@im=fcitx";
+    GLFW_IM_MODULE = "ibus";
   };
 
   console = {
@@ -65,6 +69,7 @@
     };
   };
 
+  programs.adb.enable = true;
   services.displayManager.gdm.wayland = true;
   services.displayManager.gdm.enable = true;
 
@@ -78,15 +83,27 @@
     enable = true;
     touchpad.naturalScrolling = true;
   };
-
-  users.users.flora = {
+ 
+ users.users.flora = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "adbusers" "docker" "audio" ];
     shell = pkgs.fish;
     packages = with pkgs; [ tree ];
   };
+
+  virtualisation.docker = {
+    enable = true;
+    # Optional: Enable experimental features if you need them
+    # daemon.settings = {
+    #   experimental = true;
+    # };
+  };
+
+  hardware.bluetooth.enable = true;
   programs.fish.enable = true;
   programs.firefox.enable = true;
+  programs.xwayland.enable = true;
+  programs.steam.enable = true;
 
   environment.systemPackages = with pkgs; [
     alacritty
@@ -94,13 +111,26 @@
     vim
     wget
     git
-    devenv
-    stdenv
+    pkgs.stdenv
     maple-mono.NF
+    rustup
+    gcc
   ];
 
+  home-manager.backupFileExtension = "backup";
   services.openssh.enable = true;
   networking.firewall.enable = true;
+  security.sudo.extraRules = [
+    {
+      users = [ "ALL" ];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/ectool";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

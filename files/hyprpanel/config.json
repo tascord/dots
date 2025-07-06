@@ -36,7 +36,6 @@
         "network",
         "bluetooth",
         "battery",
-        "kbinput",
         "systray",
         "clock",
         "notifications"
