@@ -10,6 +10,9 @@
         "hypr": "~/.config/hypr/",
         "hyprpanel": "~/.config/hyprpanel/"
     },
+    "loose_files": [
+        ".gitconfig"
+    ],
     "post_install": [
         "chmod +x ~/.scripts/*",
         "fc-cache -fv",

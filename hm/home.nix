@@ -6,19 +6,25 @@
   ...
 }:
 let
-  config = builtins.fromJSON (builtins.readFile ../map.json);
+  userConfig = builtins.fromJSON (builtins.readFile ../map.json);
+  mappedFiles = lib.attrsets.mapAttrsToList (source: output: {
+    name = "${lib.strings.removePrefix "~/" output}";
+    value = {
+      source = "${builtins.toString ../files}/${lib.strings.removePrefix "~" source}";
+      recursive = true;
+    };
+  }) userConfig.files;
+
+  looseFiles = map (file: {
+    name = file;
+    value = {
+      source = "${builtins.toString ../files}/${file}";
+      recursive = false;
+    };
+  }) userConfig.loose_files;
 in
 {
-
-  home.file = builtins.listToAttrs (
-    lib.attrsets.mapAttrsToList (source: output: {
-      name = "${lib.strings.removePrefix "~/" output}";
-      value = {
-        source = "${builtins.toString ../files}/${lib.strings.removePrefix "~" source}";
-        recursive = true;
-      };
-    }) config.files
-  );
+  home.file = builtins.listToAttrs (mappedFiles ++ looseFiles); 
 
   home.packages = with pkgs; [
     stdenv
@@ -48,6 +54,15 @@ in
     grimblast
     ffmpeg
     python3Full
+    gnumake
+    godot
+    musescore
+    ranger
+    wineWowPackages.stable
+    winetricks
+    yabridge
+    yabridgectl
+    carla
   ];
 
   programs.direnv.enable = true;
@@ -153,7 +168,7 @@ in
     };
   };
 
-  programs.fish.interactiveShellInit = "set QT_IM_MODULE fcitx; set XMODIFIERS @im=fcitx;";
+  programs.fish.interactiveShellInit = "set QT_IM_MODULE fcitx; set XMODIFIERS @im=fcitx; eval (ssh-agent -c) > /dev/null; ssh-add ~/.ssh/* &> /dev/null";
   home.stateVersion = "25.05";
 
 }

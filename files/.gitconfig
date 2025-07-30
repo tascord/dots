@@ -1,0 +1,19 @@
+[credential]
+helper = store
+
+[user]
+name = "Flora Hill"
+email = "imflo.pink@gmail.com"
+signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDVz/m1uJnDVLfaOI5/qiTJ/cuCshtJZci1Zt/yrGWTB
+
+[commit]
+gpgsign = true
+
+[tag]
+gpgsign = true
+
+[gpg]
+format = ssh
+
+[push]
+autoSetupRemote = true
