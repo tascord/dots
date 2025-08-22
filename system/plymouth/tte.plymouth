@@ -4,5 +4,5 @@ Description=Boot splash using terminal-text-effects
 ModuleName=script
 
 [script]
-ImageDir=/usr/share/plymouth/themes/tte/frames
-
+ImageDir=@themedir@/frames
+ScriptFile=@themedir@/script.plymouth

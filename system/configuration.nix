@@ -10,7 +10,7 @@
 }:
 
 let
-  ttePlymouthTheme = pkgs.stdenv.mkDerivation {
+  plymouthNixTheme = pkgs.stdenv.mkDerivation {
     pname = "tte-plymouth-theme";
     version = "1.0.0";
 
@@ -18,10 +18,13 @@ let
     src = lib.cleanSource ./.;
 
     installPhase = ''
-      mkdir -p $out/share/plymouth/themes/tte
-      ls -larth $src
-      cp -r $src/plymouth $out/share/plymouth/themes/tte/
-    '';
+    # Create the directory structure that NixOS expects for Plymouth themes
+    mkdir -p $out/share/plymouth/themes/tte
+    
+    # Copy the contents of your source plymouth directory into the final location
+    # This copies frames/, script.plymouth, and tte.plymouth
+    cp -r $src/plymouth/* $out/share/plymouth/themes/tte/
+  '';
   };
 in
 {
@@ -43,8 +46,9 @@ in
 
     plymouth = {
       enable = true;
-      theme = "tte"; # match the folder name in your derivation
-      themePackages = [ ttePlymouthTheme ]; # use the correct derivation variable
+      # theme = "tte"; # match the folder name in your derivation
+      theme = "bgrt"; 
+      themePackages = [ plymouthNixTheme ]; # use the correct derivation variable
     };
   };
 
@@ -121,7 +125,7 @@ in
       "audio"
     ];
     shell = pkgs.fish;
-    packages = with pkgs; [ ];
+    packages = with pkgs; [ tree ];
   };
 
   virtualisation.docker = {
@@ -149,7 +153,6 @@ in
     rustup
     gcc
     plymouth
-    tree
   ];
 
   home-manager.backupFileExtension = "backup";
