@@ -63,6 +63,10 @@ in
     yabridge
     yabridgectl
     carla
+    terminaltexteffects
+    catimg
+    imagemagick
+    asciinema
   ];
 
   programs.direnv.enable = true;

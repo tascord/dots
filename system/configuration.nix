@@ -9,6 +9,21 @@
   ...
 }:
 
+let
+  ttePlymouthTheme = pkgs.stdenv.mkDerivation {
+    pname = "tte-plymouth-theme";
+    version = "1.0.0";
+
+    # Correct path to the plymouth directory using lib.cleanSource
+    src = lib.cleanSource ./.;
+
+    installPhase = ''
+      mkdir -p $out/share/plymouth/themes/tte
+      ls -larth $src
+      cp -r $src/plymouth $out/share/plymouth/themes/tte/
+    '';
+  };
+in
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -17,17 +32,30 @@
     "flakes"
   ];
 
-  nix.settings.trusted-users = [ "root" "flora" ];
+  nix.settings.trusted-users = [
+    "root"
+    "flora"
+  ];
   nixpkgs.config.allowUnfree = true;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    loader.efi.canTouchEfiVariables = true;
+    loader.systemd-boot.enable = true;
+
+    plymouth = {
+      enable = true;
+      theme = "tte"; # match the folder name in your derivation
+      themePackages = [ ttePlymouthTheme ]; # use the correct derivation variable
+    };
+  };
+
   services.fprintd.enable = true;
   networking.hostName = "floramobile";
   networking.networkmanager.enable = true;
   time.timeZone = "Australia/Melbourne";
   i18n.defaultLocale = "en_AU.UTF-8";
   i18n.inputMethod = {
-    enabled = "fcitx5";
+    enable = true;
+    type = "fcitx5";
     fcitx5.waylandFrontend = true;
     fcitx5.addons = with pkgs; [
       fcitx5-gtk
@@ -83,12 +111,17 @@
     enable = true;
     touchpad.naturalScrolling = true;
   };
- 
- users.users.flora = {
+
+  users.users.flora = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "adbusers" "docker" "audio" ];
+    extraGroups = [
+      "wheel"
+      "adbusers"
+      "docker"
+      "audio"
+    ];
     shell = pkgs.fish;
-    packages = with pkgs; [ tree ];
+    packages = with pkgs; [ ];
   };
 
   virtualisation.docker = {
@@ -115,6 +148,8 @@
     maple-mono.NF
     rustup
     gcc
+    plymouth
+    tree
   ];
 
   home-manager.backupFileExtension = "backup";
@@ -133,7 +168,12 @@
   ];
 
   security.pam.loginLimits = [
-    { domain = "*"; item = "nofile"; type = "-"; value = "65536"; }
+    {
+      domain = "*";
+      item = "nofile";
+      type = "-";
+      value = "65536";
+    }
   ];
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
