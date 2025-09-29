@@ -1,9 +1,0 @@
-wallpaper_image_dir = "frames"; // use a relative path
-wallpaper = ImageDir(wallpaper_image_dir, 1, 9999); // load sequential frames
-
-// Center the animation
-wallpaper.SetPosition(Window.GetWidth()/2 - wallpaper.GetWidth()/2,
-                      Window.GetHeight()/2 - wallpaper.GetHeight()/2);
-
-// Start animation at 30 fps (tweak if too fast/slow)
-wallpaper.StartAnimation(30);

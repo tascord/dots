@@ -1,0 +1,7 @@
+[Plymouth Theme]
+Name=tte
+Description=Boot animation using extracted GIF frames
+ModuleName=script
+
+[script]
+ScriptFile=script.plymouth

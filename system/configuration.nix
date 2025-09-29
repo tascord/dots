@@ -6,29 +6,14 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 
-let
-  plymouthNixTheme = pkgs.stdenv.mkDerivation {
-    pname = "tte-plymouth-theme";
-    version = "1.0.0";
-
-    # Correct path to the plymouth directory using lib.cleanSource
-    src = lib.cleanSource ./.;
-
-    installPhase = ''
-    # Create the directory structure that NixOS expects for Plymouth themes
-    mkdir -p $out/share/plymouth/themes/tte
-    
-    # Copy the contents of your source plymouth directory into the final location
-    # This copies frames/, script.plymouth, and tte.plymouth
-    cp -r $src/plymouth/* $out/share/plymouth/themes/tte/
-  '';
-  };
-in
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   nix.settings.experimental-features = [
     "nix-command"
@@ -46,9 +31,7 @@ in
 
     plymouth = {
       enable = true;
-      # theme = "tte"; # match the folder name in your derivation
-      theme = "bgrt"; 
-      themePackages = [ plymouthNixTheme ]; # use the correct derivation variable
+      themePackages = [ inputs.plymouth-theme.packages.${pkgs.system}.default ];
     };
   };
 
@@ -123,6 +106,7 @@ in
       "adbusers"
       "docker"
       "audio"
+      "dialout"
     ];
     shell = pkgs.fish;
     packages = with pkgs; [ tree ];
@@ -178,6 +162,11 @@ in
       value = "65536";
     }
   ];
+
+  nix.gc.automatic = true;
+  nix.gc.dates = "weekly"; # or "daily"
+  nix.gc.options = "--delete-older-than 7d";
+
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.

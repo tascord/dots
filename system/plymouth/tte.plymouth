@@ -1,8 +1,0 @@
-[Plymouth Theme]
-Name=TTE Boot
-Description=Boot splash using terminal-text-effects
-ModuleName=script
-
-[script]
-ImageDir=@themedir@/frames
-ScriptFile=@themedir@/script.plymouth

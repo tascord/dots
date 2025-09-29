@@ -67,6 +67,17 @@ in
     catimg
     imagemagick
     asciinema
+    overskride
+    light
+    arduino-ide
+    cura-appimage
+    feh
+    nautilus
+    darktable
+    vscode-extensions.rust-lang.rust-analyzer
+    rpi-imager
+    xwayland
+    ghostty
   ];
 
   programs.direnv.enable = true;
