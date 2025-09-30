@@ -8,7 +8,8 @@
         "fonts": "~/.local/share/fonts",
         "wal_templates": "~/.config/wal/templates",
         "hypr": "~/.config/hypr/",
-        "hyprpanel": "~/.config/hyprpanel/"
+        "hyprpanel": "~/.config/hyprpanel/",
+        "ghostty": "~/.config/ghostty/"
     },
     "loose_files": [
         ".gitconfig"

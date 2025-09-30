@@ -1,0 +1,19 @@
+theme="/home/flora/.cache/wal/colors-ghostty"
+font-family = Maple Mono
+font-size = 14
+font-thicken = true
+window-padding-x = 10
+window-padding-y = 10
+background-opacity = 0.75
+
+cursor-style = block
+shell-integration-features = no-cursor,sudo
+cursor-style-blink = false
+link-url = true
+window-inherit-working-directory = true
+window-inherit-font-size = true
+window-theme = system
+clipboard-trim-trailing-spaces = true
+keybind = global:super+grave_accent=toggle_quick_terminal
+
+custom-shader = ./cursor.glsl
