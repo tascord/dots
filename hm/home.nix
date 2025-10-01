@@ -28,6 +28,7 @@ in
 
   home.packages = with pkgs; [
     stdenv
+    hyprpanel
     devenv
     acpi
     kitty
@@ -53,7 +54,6 @@ in
     pkgs.nodePackages.nodemon
     grimblast
     ffmpeg
-    python3Full
     gnumake
     godot
     musescore
@@ -78,12 +78,14 @@ in
     rpi-imager
     xwayland
     ghostty
+    gh
   ];
 
   programs.direnv.enable = true;
-  programs.command-not-found.enable = true;
   programs.fish.enable = true;
   services.picom.enable = true;
+
+  programs.nh.enable = true;
 
   programs.starship = {
     enable = true;

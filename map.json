@@ -9,7 +9,8 @@
         "wal_templates": "~/.config/wal/templates",
         "hypr": "~/.config/hypr/",
         "hyprpanel": "~/.config/hyprpanel/",
-        "ghostty": "~/.config/ghostty/"
+        "ghostty": "~/.config/ghostty/",
+        "rofi": "~/.config/rofi",
     },
     "loose_files": [
         ".gitconfig"

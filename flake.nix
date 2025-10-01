@@ -4,11 +4,10 @@
     nixos-hardware.url = "github:Nixos/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     plymouth-theme.url = "path:/home/flora/dots/flakes/plymouth-theme-custom";
   };
 
-  outputs = inputs@{ self, nixpkgs, hyprpanel, ... }: 
+  outputs = inputs@{ self, nixpkgs, ... }: 
   let system = "x86_64-linux"; in {
     # NOTE: 'nixos' is the default hostname
     nixosConfigurations.floramobile = nixpkgs.lib.nixosSystem {
@@ -25,7 +24,6 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.flora = ./hm/home.nix;
-          nixpkgs.overlays = [inputs.hyprpanel.overlay];
         }
 
       ];

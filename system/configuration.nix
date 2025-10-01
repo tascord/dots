@@ -35,6 +35,7 @@
     };
   };
 
+  programs.nix-ld.enable = true;
   services.fprintd.enable = true;
   networking.hostName = "floramobile";
   networking.networkmanager.enable = true;
