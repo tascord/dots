@@ -5,18 +5,20 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     plymouth-theme.url = "path:/home/flora/dots/flakes/plymouth-theme-custom";
+    zen-browser.url = "github:tascord/zen-nix"; 
   };
 
-  outputs = inputs@{ self, nixpkgs, ... }: 
+  outputs = inputs@{ self, zen-browser, nixpkgs, ... }: 
   let system = "x86_64-linux"; in {
-    # NOTE: 'nixos' is the default hostname
     nixosConfigurations.floramobile = nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit system;
         inherit inputs;
+        inherit zen-browser;
       };
 
       modules = [
+
         inputs.home-manager.nixosModules.home-manager
         inputs.nixos-hardware.nixosModules.framework-12th-gen-intel
         ./system/configuration.nix

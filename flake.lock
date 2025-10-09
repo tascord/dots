@@ -67,6 +67,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1759831965,
+        "narHash": "sha256-vgPm2xjOmKdZ0xKA6yLXPJpjOtQPHfaZDRtH+47XEBo=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "c9b6fb798541223bbb396d287d16f43520250518",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "plymouth-theme": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
@@ -87,7 +103,26 @@
         "home-manager": "home-manager",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "plymouth-theme": "plymouth-theme"
+        "plymouth-theme": "plymouth-theme",
+        "zen-browser": "zen-browser"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1760006598,
+        "narHash": "sha256-5JIzZiABfDgf4dspXrYySQKILsLlD+hAA4fvprIhKFU=",
+        "owner": "tascord",
+        "repo": "zen-nix",
+        "rev": "48a7f37bbaeee672b62b123b5eaa72cd5b055524",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tascord",
+        "repo": "zen-nix",
+        "type": "github"
       }
     }
   },

@@ -10,7 +10,7 @@
         "hypr": "~/.config/hypr/",
         "hyprpanel": "~/.config/hyprpanel/",
         "ghostty": "~/.config/ghostty/",
-        "rofi": "~/.config/rofi",
+        "rofi": "~/.config/rofi"
     },
     "loose_files": [
         ".gitconfig"

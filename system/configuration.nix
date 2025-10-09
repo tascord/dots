@@ -7,6 +7,7 @@
   lib,
   pkgs,
   inputs,
+  zen-browser,
   ...
 }:
 
@@ -15,6 +16,7 @@
     ./hardware-configuration.nix
   ];
 
+  nixpkgs.config.allowUnsupportedSystem = true;
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -67,24 +69,6 @@
   };
 
   programs.hyprland.enable = true;
-  services.xserver = {
-    enable = true;
-    xkb.layout = "us";
-    xkb.options = "eurosign:e,caps:escape";
-    desktopManager = {
-      xterm.enable = false;
-    };
-    windowManager.i3 = {
-      enable = true;
-      extraPackages = with pkgs; [
-        dmenu
-        i3status
-        i3lock
-        i3blocks
-      ];
-    };
-  };
-
   programs.adb.enable = true;
   services.displayManager.gdm.wayland = true;
   services.displayManager.gdm.enable = true;
@@ -138,6 +122,20 @@
     rustup
     gcc
     plymouth
+    zen-browser.packages.x86_64-linux.zen-browser
+    dmenu
+    devenv
+    acpi
+    fcitx5-mozc
+    fcitx5-gtk
+    grimblast
+    feh
+    light
+    overskride
+    imagemagick
+    unzip
+    lsof
+    python3
   ];
 
   home-manager.backupFileExtension = "backup";
