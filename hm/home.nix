@@ -61,4 +61,9 @@ in
   programs.fish.interactiveShellInit = "set QT_IM_MODULE fcitx; set XMODIFIERS @im=fcitx; eval (ssh-agent -c) > /dev/null; ssh-add ~/.ssh/* &> /dev/null";
   home.stateVersion = "25.05";
 
+  programs.fish.shellAliases = {
+    ls = "eza -l --icons=always --git-ignore --hyperlink --git --git-repos-no-status --time-style relative
+ --no-permissions";
+  };
+
 }
