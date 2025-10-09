@@ -4,11 +4,11 @@
     nixos-hardware.url = "github:Nixos/nixos-hardware";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    zen-browser.url = "github:tascord/zen-nix";
     plymouth-theme.url = "path:/home/flora/dots/flakes/plymouth-theme-custom";
-    zen-browser.url = "github:tascord/zen-nix"; 
   };
 
-  outputs = inputs@{ self, zen-browser, nixpkgs, ... }: 
+  outputs = inputs@{ self, nixpkgs, zen-browser, ... }: 
   let system = "x86_64-linux"; in {
     nixosConfigurations.floramobile = nixpkgs.lib.nixosSystem {
       specialArgs = {

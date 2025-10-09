@@ -1,1 +1,0 @@
-/home/flora/.local/share/omf/themes/flie/fish_prompt.fish
