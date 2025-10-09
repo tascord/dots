@@ -34,21 +34,15 @@ in
     vscode
     hyprpaper
     hyfetch
-    pavucontrol
     spotify
-    playerctl
-    spotifyd
     discord
     godot
     musescore
-    ranger
     terminaltexteffects
     asciinema
     cura-appimage
-    nautilus
     darktable
     vscode-extensions.rust-lang.rust-analyzer
-    xwayland
     ghostty
     gh
     eza

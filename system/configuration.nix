@@ -136,6 +136,12 @@
     unzip
     lsof
     python3
+    pavucontrol
+    playerctl
+    spotifyd
+    ranger
+    nautilus
+    xwayland
   ];
 
   home-manager.backupFileExtension = "backup";
