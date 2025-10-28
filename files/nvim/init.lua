@@ -193,7 +193,13 @@ require("lazy").setup({
     version = "*",
     config = function()
       require("toggleterm").setup({
-        size = 15,
+        size = function(term)
+          if term.direction == "horizontal" then
+            return 15
+          elseif term.direction == "vertical" then
+            return vim.o.columns * 0.4
+          end
+        end,
         open_mapping = [[<c-\>]],
         hide_numbers = true,
         shade_terminals = true,
@@ -280,12 +286,63 @@ vim.keymap.set('n', '<C-f>', ':Telescope live_grep<CR>', { noremap = true, silen
 -- Command palette (Ctrl+Shift+p) - opens Telescope commands
 vim.keymap.set('n', '<C-S-p>', ':Telescope commands<CR>', { noremap = true, silent = true })
 
--- Quick command runner (Ctrl+Shift+r) - opens bottom terminal with command prompt
+-- Quick command runner (Ctrl+Shift+r) - opens minimal height terminal that expands
 vim.keymap.set('n', '<C-S-r>', function()
-  vim.cmd('ToggleTerm')
-  vim.defer_fn(function()
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('i', true, false, true), 'n', false)
-  end, 50)
+  local Terminal = require('toggleterm.terminal').Terminal
+  local mini_term = Terminal:new({
+    direction = "horizontal",
+    size = 3,
+    close_on_exit = false,
+    on_open = function(term)
+      vim.cmd("startinsert!")
+      
+      -- Monitor terminal output and adjust size
+      vim.api.nvim_create_autocmd("TermOpen", {
+        buffer = term.bufnr,
+        callback = function()
+          local chan = vim.api.nvim_buf_get_var(term.bufnr, 'terminal_job_id')
+          
+          -- Auto-resize based on content
+          local timer = vim.loop.new_timer()
+          timer:start(100, 100, vim.schedule_wrap(function()
+            if not vim.api.nvim_buf_is_valid(term.bufnr) then
+              timer:stop()
+              return
+            end
+            
+            local lines = vim.api.nvim_buf_get_lines(term.bufnr, 0, -1, false)
+            local non_empty = 0
+            for _, line in ipairs(lines) do
+              if line:match("%S") then
+                non_empty = non_empty + 1
+              end
+            end
+            
+            local new_size = math.max(3, math.min(non_empty + 1, 20))
+            if term:is_open() and vim.api.nvim_win_is_valid(term.window) then
+              vim.api.nvim_win_set_height(term.window, new_size)
+            end
+          end))
+        end,
+      })
+      
+      -- Handle exit status
+      vim.api.nvim_create_autocmd("TermClose", {
+        buffer = term.bufnr,
+        callback = function()
+          local exit_code = vim.v.event.status
+          if exit_code == 0 then
+            vim.defer_fn(function()
+              if term:is_open() then
+                term:close()
+              end
+            end, 500)
+          end
+        end,
+      })
+    end,
+  })
+  mini_term:toggle()
 end, { noremap = true, silent = true })
 
 -- Toggle bottom terminal (Ctrl+`)
