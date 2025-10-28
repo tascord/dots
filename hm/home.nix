@@ -52,6 +52,9 @@ in
     sptlrx
     hyprlock
     cava
+    matugen
+    swww
+    waybar
     # new
   ];
 

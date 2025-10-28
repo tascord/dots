@@ -125,20 +125,11 @@ require("lazy").setup({
       require('mason-lspconfig').setup()
     end
   },
-  { 'neovim/nvim-lspconfig' },
 
   -- Rust
-  { 'simrat39/rust-tools.nvim',
-    config = function()
-      local rt = require('rust-tools')
-      rt.setup({
-        server = {
-          on_attach = function(_, bufnr)
-            vim.keymap.set("n", "<C-.>", rt.hover_actions.hover_actions, { buffer = bufnr })
-          end
-        }
-      })
-    end
+  { 'mrcjkb/rustaceanvim',
+    version = '^5',
+    lazy = false,
   },
   { 'rust-lang/rust.vim' },
 
@@ -254,22 +245,26 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 end
 
--- Update rust-tools to use the on_attach
-local rt = require('rust-tools')
-rt.setup({
-  server = {
-    on_attach = on_attach,
-  }
-})
-
--- Setup LSP servers with vim.lsp.config (nvim 0.11+)
+-- Setup capabilities for LSP
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
--- You can add more LSP servers here using vim.lsp.config
--- Example for other LSP servers:
+-- Configure rustaceanvim (replaces rust-tools)
+vim.g.rustaceanvim = {
+  server = {
+    on_attach = on_attach,
+    default_settings = {
+      ['rust-analyzer'] = {},
+    },
+  },
+}
+
+-- Example: Add other LSP servers using new vim.lsp.config API
+-- Uncomment and modify as needed:
+--
 -- vim.lsp.config('pyright', {
 --   cmd = { 'pyright-langserver', '--stdio' },
 --   filetypes = { 'python' },
+--   root_markers = { 'pyproject.toml', 'setup.py' },
 --   on_attach = on_attach,
 --   capabilities = capabilities,
 -- })

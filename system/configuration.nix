@@ -7,7 +7,6 @@
   lib,
   pkgs,
   inputs,
-  zen-browser,
   ...
 }:
 
@@ -122,7 +121,6 @@
     rustup
     gcc
     plymouth
-    zen-browser.packages.x86_64-linux.zen-browser
     dmenu
     devenv
     acpi
