@@ -72,6 +72,7 @@
   programs.adb.enable = true;
   services.displayManager.gdm.wayland = true;
   services.displayManager.gdm.enable = true;
+  services.udisks2.enable = true;
 
   services.printing.enable = true;
   services.pipewire = {
@@ -116,7 +117,6 @@
     google-chrome
     vim
     wget
-    git
     pkgs.stdenv
     maple-mono.NF
     rustup
@@ -142,6 +142,7 @@
     ranger
     nautilus
     xwayland
+    hyprlandPlugins.hyprexpo
   ];
 
   home-manager.backupFileExtension = "backup";
@@ -167,6 +168,13 @@
       value = "65536";
     }
   ];
+
+  programs.git.enable = true;
+  programs.git.config = {
+    init = {
+      defaultBranch = "main";
+    };
+  };
 
   nix.gc.automatic = true;
   nix.gc.dates = "weekly"; # or "daily"

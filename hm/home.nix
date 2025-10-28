@@ -46,6 +46,13 @@ in
     ghostty
     gh
     eza
+    eww
+    modrinth-app
+    kdePackages.ghostwriter
+    sptlrx
+    hyprlock
+    cava
+    # new
   ];
 
   programs.direnv.enable = true;
@@ -58,7 +65,7 @@ in
   programs.fish.shellAliases = {
     ls = "eza --icons=always --git-ignore --hyperlink --git --git-repos-no-status --time-style relative --no-permissions";
   };
-
+  
   programs.fish = {
     enable = true;
     functions = {
@@ -124,4 +131,8 @@ in
     };
   };
 
+
+  services.udiskie.enable = true;
+  wayland.windowManager.hyprland.systemd.variables = [ "--all" ];
 }
+

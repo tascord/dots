@@ -18,6 +18,7 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.termguicolors = true
 vim.o.splitright = true
+vim.o.splitbelow = true
 vim.o.foldmethod = 'expr'
 vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.o.foldcolumn = '0'
@@ -25,122 +26,315 @@ vim.o.foldtext = ""
 vim.o.foldlevel = 99
 vim.o.foldenable = false
 vim.o.foldnestmax = 4
-vim.o.whichwrap = '[,],<,>'
+vim.o.whichwrap = '[,],<,>,h,l'
 
-local vim = vim
-local Plug = vim.fn['plug#']
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
 -- plugins
-vim.call('plug#begin')
+require("lazy").setup({
+  -- File tree
+  {
+    'nvim-tree/nvim-tree.lua',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require("nvim-tree").setup()
+    end
+  },
 
-Plug('nvim-tree/nvim-tree.lua')                       -- file tree
-Plug('junegunn/fzf.vim')                              -- fuzzy finder
-Plug('feline-nvim/feline.nvim')                       -- statusline
-Plug('nvim-telescope/telescope.nvim')                 -- telescope
-Plug('tpope/vim-fugitive')                            -- git
-Plug('tpope/vim-commentary')                          -- comments
-Plug('luochen1990/rainbow')                           -- rainbow brackets
-Plug('airblade/vim-gitgutter')                        -- gitgutter
-Plug('AlphaTechnolog/pywal.nvim', {['as'] = 'pywal'}) -- pywal
-Plug('nvim-lua/plenary.nvim')                         -- plenary
-Plug('hrsh7th/nvim-cmp') 
-Plug('hrsh7th/cmp-nvim-lsp')
-Plug('hrsh7th/cmp-nvim-lua')
-Plug('hrsh7th/cmp-nvim-lsp-signature-help')
-Plug('hrsh7th/cmp-vsnip')            
-Plug('hrsh7th/cmp-path')                            
-Plug('hrsh7th/cmp-buffer')                            
-Plug('hrsh7th/vim-vsnip')
-Plug('williamboman/mason.nvim')
-Plug('williamboman/mason-lspconfig.nvim')
-Plug('neovim/nvim-lspconfig')
-Plug('simrat39/rust-tools.nvim')
-Plug('folke/trouble.nvim')
-Plug('nvim-tree/nvim-web-devicons')
-Plug('lewis6991/gitsigns.nvim')
-Plug('romgrk/barbar.nvim')
+  -- Fuzzy finder (Telescope replaces fzf.vim)
+  {
+    'nvim-telescope/telescope.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('telescope').setup()
+    end
+  },
 
-Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'}) -- treesitter
+  -- Statusline (lualine is more modern than feline)
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup({
+        options = {
+          theme = 'auto'
+        }
+      })
+    end
+  },
 
--- Rust
-Plug('rust-lang/rust.vim')
+  -- Git
+  { 'tpope/vim-fugitive' },
+  
+  -- Comments (Comment.nvim is more feature-rich)
+  {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup()
+    end
+  },
 
-vim.call('plug#end')
+  -- Rainbow brackets
+  { 'luochen1990/rainbow' },
 
-require("nvim-tree").setup()
-require('pywal').setup()
-require('feline').setup()
-require('telescope').setup()
-require('mason').setup()
-require('mason-lspconfig').setup()
+  -- Git signs (gitsigns replaces gitgutter - already in your config!)
+  {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup()
+    end
+  },
 
+  -- Pywal
+  { 'AlphaTechnolog/pywal.nvim', name = 'pywal',
+    config = function()
+      require('pywal').setup()
+    end
+  },
+
+  -- Completion
+  { 'hrsh7th/nvim-cmp' },
+  { 'hrsh7th/cmp-nvim-lsp' },
+  { 'hrsh7th/cmp-nvim-lua' },
+  { 'hrsh7th/cmp-nvim-lsp-signature-help' },
+  { 'hrsh7th/cmp-vsnip' },
+  { 'hrsh7th/cmp-path' },
+  { 'hrsh7th/cmp-buffer' },
+  { 'hrsh7th/vim-vsnip' },
+
+  -- LSP
+  { 'williamboman/mason.nvim',
+    config = function()
+      require('mason').setup()
+    end
+  },
+  { 'williamboman/mason-lspconfig.nvim',
+    config = function()
+      require('mason-lspconfig').setup()
+    end
+  },
+  { 'neovim/nvim-lspconfig' },
+
+  -- Rust
+  { 'simrat39/rust-tools.nvim',
+    config = function()
+      local rt = require('rust-tools')
+      rt.setup({
+        server = {
+          on_attach = function(_, bufnr)
+            vim.keymap.set("n", "<C-.>", rt.hover_actions.hover_actions, { buffer = bufnr })
+          end
+        }
+      })
+    end
+  },
+  { 'rust-lang/rust.vim' },
+
+  -- Diagnostics
+  {
+    'folke/trouble.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+
+  -- Bufferline (better alternative to barbar)
+  {
+    'akinsho/bufferline.nvim',
+    version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function()
+      require("bufferline").setup({
+        options = {
+          diagnostics = "nvim_lsp",
+          offsets = {
+            {
+              filetype = "NvimTree",
+              text = "File Explorer",
+              highlight = "Directory",
+              separator = true
+            }
+          }
+        }
+      })
+    end
+  },
+
+  -- Treesitter
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        ensure_installed = { "lua", "rust", "toml" },
+        auto_install = true,
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+        indent = { enable = true },
+      }
+    end
+  },
+
+  -- Toggleterm for bottom terminal
+  {
+    'akinsho/toggleterm.nvim',
+    version = "*",
+    config = function()
+      require("toggleterm").setup({
+        size = 15,
+        open_mapping = [[<c-\>]],
+        hide_numbers = true,
+        shade_terminals = true,
+        start_in_insert = true,
+        insert_mappings = true,
+        persist_size = true,
+        direction = "horizontal",
+        close_on_exit = true,
+        shell = vim.o.shell,
+      })
+    end
+  },
+})
+
+-- LSP Keymaps (VSCode-like)
+local on_attach = function(client, bufnr)
+  local opts = { noremap = true, silent = true, buffer = bufnr }
+  
+  -- Code actions (Ctrl+. and Ctrl+Space)
+  vim.keymap.set('n', '<C-.>', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', '<C-Space>', vim.lsp.buf.code_action, opts)
+  
+  -- Rename (F2)
+  vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, opts)
+  
+  -- Go to definition (F12)
+  vim.keymap.set('n', '<F12>', vim.lsp.buf.definition, opts)
+  
+  -- Go to declaration (Ctrl+F12)
+  vim.keymap.set('n', '<C-F12>', vim.lsp.buf.declaration, opts)
+  
+  -- Show hover (K)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  
+  -- Go to implementation (Ctrl+I)
+  vim.keymap.set('n', '<C-i>', vim.lsp.buf.implementation, opts)
+  
+  -- Show signature help
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+  
+  -- Find references (Shift+F12)
+  vim.keymap.set('n', '<S-F12>', vim.lsp.buf.references, opts)
+  
+  -- Format document (Shift+Alt+F)
+  vim.keymap.set('n', '<S-A-f>', function() vim.lsp.buf.format({ async = true }) end, opts)
+  
+  -- Show diagnostics in floating window
+  vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
+  
+  -- Go to next/previous diagnostic
+  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+end
+
+-- Update rust-tools to use the on_attach
 local rt = require('rust-tools')
 rt.setup({
   server = {
-      on_attach = function(_, bufnr)
-        vim.keymap.set("n", "<C-.>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      end
-    }
+    on_attach = on_attach,
+  }
 })
 
-require('nvim-treesitter.configs').setup {
-  ensure_installed = { "lua", "rust", "toml" },
-  auto_install = true,
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting=false,
-  },
-  ident = { enable = true }, 
-}
+-- Setup LSP servers with on_attach
+local lspconfig = require('lspconfig')
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+-- You can add more LSP servers here
+-- Example: lspconfig.pyright.setup({ on_attach = on_attach, capabilities = capabilities })
 
 -- keymaps
 
 -- Open Tree (Ctrl+b)
-vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-b>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 -- Open Git (Ctrl+g)
-vim.api.nvim_set_keymap('n', '<C-g>', ':Git<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-g>', ':Git<CR>', { noremap = true, silent = true })
 
 -- Open Telescope (Ctrl+p)
-vim.api.nvim_set_keymap('n', '<C-p>', ':Telescope find_files<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-p>', ':Telescope find_files<CR>', { noremap = true, silent = true })
 
--- Open Find Across Files with Telescope (Ctrl+Shift+F)
-vim.api.nvim_set_keymap('n', '<C-f>', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+-- Open Find Across Files with Telescope (Ctrl+f)
+vim.keymap.set('n', '<C-f>', ':Telescope live_grep<CR>', { noremap = true, silent = true })
 
--- Open Terminal in panel to right (Ctrl+`)
-vim.api.nvim_set_keymap('n', '<C-`>', ':vsplit term://fish<CR>', { noremap = true, silent = true })
+-- Command palette (Ctrl+Shift+p) - opens Telescope commands
+vim.keymap.set('n', '<C-S-p>', ':Telescope commands<CR>', { noremap = true, silent = true })
+
+-- Quick command runner (Ctrl+Shift+r) - opens bottom terminal with command prompt
+vim.keymap.set('n', '<C-S-r>', function()
+  vim.cmd('ToggleTerm')
+  vim.defer_fn(function()
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('i', true, false, true), 'n', false)
+  end, 50)
+end, { noremap = true, silent = true })
+
+-- Toggle bottom terminal (Ctrl+`)
+vim.keymap.set('n', '<C-`>', ':ToggleTerm<CR>', { noremap = true, silent = true })
+vim.keymap.set('t', '<C-`>', '<Cmd>ToggleTerm<CR>', { noremap = true, silent = true })
+
+-- Open vertical terminal (Ctrl+Shift+`)
+vim.keymap.set('n', '<C-S-`>', ':ToggleTerm direction=vertical size=80<CR>', { noremap = true, silent = true })
 
 -- Close Current Panel (Ctrl+w)
-vim.api.nvim_set_keymap('n', '<C-w>', ':close<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-w>', ':close<CR>', { noremap = true, silent = true })
 
 -- Move to next panel (Ctrl+Right)
-vim.api.nvim_set_keymap('n', '<C-Right>', '<C-w>l', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-Right>', '<C-w>l', { noremap = true, silent = true })
 
 -- Move to previous panel (Ctrl+Left)
-vim.api.nvim_set_keymap('n', '<C-Left>', '<C-w>h', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-Left>', '<C-w>h', { noremap = true, silent = true })
+
+-- Move up/down panels
+vim.keymap.set('n', '<C-Up>', '<C-w>k', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-Down>', '<C-w>j', { noremap = true, silent = true })
 
 -- Set terminal to normal mode (Esc)
-vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 
 -- Fold block (Ctrl+])
-vim.api.nvim_set_keymap('n', '<C-]>', 'za', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-]>', 'za', { noremap = true, silent = true })
 
 -- Unfold block (Ctrl+[)
-vim.api.nvim_set_keymap('n', '<C-[>', 'zA', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-[>', 'zA', { noremap = true, silent = true })
 
--- Cycle tabs
-vim.api.nvim_set_keymap('n', '<C-Tab>', '<Cmd>BufferNext<Cr>', { noremap = true, silent = true })
+-- Cycle tabs (using bufferline)
+vim.keymap.set('n', '<C-Tab>', ':BufferLineCycleNext<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-S-Tab>', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true })
 
--- Close tab
-vim.api.nvim_set_keymap('n', '<C-w>', '<Cmd>BufferClose<Cr>', { noremap = true, silent = true })
+-- Close tab (using bufferline) - Note: conflicts with close panel above
+vim.keymap.set('n', '<leader>w', ':bdelete<CR>', { noremap = true, silent = true })
+
+-- Save file (Ctrl+s)
+vim.keymap.set('n', '<C-s>', ':w<CR>', { noremap = true, silent = true })
+vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>a', { noremap = true, silent = true })
 
 -- Automatically use insert mode in the terminal
-vim.api.nvim_create_autocmd({"WinEnter", "BufWinEnter"}, {
-  pattern = {"term://"},
+vim.api.nvim_create_autocmd({"TermOpen"}, {
+  pattern = {"*"},
   command = "startinsert"
 })
 
--- LSP Diagnostics Options Setup 
+-- LSP Diagnostics Options Setup
 local sign = function(opts)
   vim.fn.sign_define(opts.name, {
     texthl = opts.name,
@@ -149,23 +343,23 @@ local sign = function(opts)
   })
 end
 
-sign({name = 'DiagnosticSignError', text = ''})
-sign({name = 'DiagnosticSignWarn', text = ''})
-sign({name = 'DiagnosticSignHint', text = ''})
-sign({name = 'DiagnosticSignInfo', text = ''})
+sign({name = 'DiagnosticSignError', text = ''})
+sign({name = 'DiagnosticSignWarn', text = ''})
+sign({name = 'DiagnosticSignHint', text = ''})
+sign({name = 'DiagnosticSignInfo', text = ''})
 
 vim.diagnostic.config({
-    virtual_text = false,
-    signs = true,
-    update_in_insert = true,
-    underline = true,
-    severity_sort = false,
-    float = {
-        border = 'rounded',
-        source = 'always',
-        header = '',
-        prefix = '',
-    },
+  virtual_text = false,
+  signs = true,
+  update_in_insert = true,
+  underline = true,
+  severity_sort = false,
+  float = {
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+  },
 })
 
 vim.cmd([[
@@ -177,18 +371,17 @@ vim.opt.completeopt = {'menuone', 'noselect', 'noinsert'}
 vim.opt.shortmess = vim.opt.shortmess + { c = true}
 vim.api.nvim_set_option('updatetime', 300)
 
+-- Completion setup
 local cmp = require'cmp'
 cmp.setup({
-  -- Enable LSP snippets
   snippet = {
     expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
+      vim.fn["vsnip#anonymous"](args.body)
     end,
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-n>'] = cmp.mapping.select_next_item(),
-    -- Add tab support
     ['<S-Tab>'] = cmp.mapping.select_prev_item(),
     ['<Tab>'] = cmp.mapping.select_next_item(),
     ['<C-S-f>'] = cmp.mapping.scroll_docs(-4),
@@ -199,35 +392,32 @@ cmp.setup({
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
     })
-  },
-  -- Installed sources:
+  }),
   sources = {
-    { name = 'path' },                              -- file paths
-    { name = 'nvim_lsp', keyword_length = 3 },      -- from language server
-    { name = 'nvim_lsp_signature_help'},            -- display function signatures with current parameter emphasized
-    { name = 'nvim_lua', keyword_length = 2},       -- complete neovim's Lua runtime API such vim.lsp.*
-    { name = 'buffer', keyword_length = 2 },        -- source current buffer
-    { name = 'vsnip', keyword_length = 2 },         -- nvim-cmp source for vim-vsnip 
-    { name = 'calc'},                               -- source for math calculation
+    { name = 'path' },
+    { name = 'nvim_lsp', keyword_length = 3 },
+    { name = 'nvim_lsp_signature_help'},
+    { name = 'nvim_lua', keyword_length = 2},
+    { name = 'buffer', keyword_length = 2 },
+    { name = 'vsnip', keyword_length = 2 },
   },
   window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
   },
   formatting = {
-      fields = {'menu', 'abbr', 'kind'},
-      format = function(entry, item)
-          local menu_icon ={
-              nvim_lsp = 'λ',
-              vsnip = '⋗',
-              buffer = 'Ω',
-              path = '🖫',
-          }
-          item.menu = menu_icon[entry.source.name]
-          return item
-      end,
+    fields = {'menu', 'abbr', 'kind'},
+    format = function(entry, item)
+      local menu_icon = {
+        nvim_lsp = 'λ',
+        vsnip = '⋗',
+        buffer = 'Ω',
+        path = '🖫',
+      }
+      item.menu = menu_icon[entry.source.name]
+      return item
+    end,
   },
 })
 
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-
