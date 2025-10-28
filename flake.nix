@@ -6,9 +6,13 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     zen-browser.url = "github:tascord/zen-nix";
     plymouth-theme.url = "path:/home/flora/dots/flakes/plymouth-theme-custom";
+    vicinae = {
+      url = "github:vicinaehq/vicinae";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, zen-browser, ... }: 
+  outputs = inputs@{ self, nixpkgs, zen-browser,vicinae, ... }: 
   let system = "x86_64-linux"; in {
     nixosConfigurations.floramobile = nixpkgs.lib.nixosSystem {
       specialArgs = {
@@ -26,6 +30,9 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.flora = ./hm/home.nix;
+          environment.systemPackages = [
+            vicinae.packages.x86_64-linux.default
+          ];
         }
 
       ];

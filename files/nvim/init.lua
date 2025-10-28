@@ -262,12 +262,18 @@ rt.setup({
   }
 })
 
--- Setup LSP servers with on_attach
-local lspconfig = require('lspconfig')
+-- Setup LSP servers with vim.lsp.config (nvim 0.11+)
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
--- You can add more LSP servers here
--- Example: lspconfig.pyright.setup({ on_attach = on_attach, capabilities = capabilities })
+-- You can add more LSP servers here using vim.lsp.config
+-- Example for other LSP servers:
+-- vim.lsp.config('pyright', {
+--   cmd = { 'pyright-langserver', '--stdio' },
+--   filetypes = { 'python' },
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+-- })
+-- vim.lsp.enable('pyright')
 
 -- keymaps
 
