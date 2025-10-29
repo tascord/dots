@@ -56,6 +56,8 @@ in
     swww
     waybar
     waybar-mpris
+    waybar-lyric
+    wl-clip-persist
     # new
   ];
 

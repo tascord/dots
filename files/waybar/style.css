@@ -13,6 +13,10 @@ window#waybar {
     background: transparent;
 }
 
+.lyric {
+    color: #ffffff !important;
+}
+
 #workspaces,
 #window,
 #clock,
@@ -20,7 +24,9 @@ window#waybar {
 #network,
 #pulseaudio,
 #mpris,
-#tray {
+#cava,
+#tray,
+#custom-ly {
     color: #ffffff;
     background: transparent;
     padding: 0 1rem;
@@ -66,7 +72,6 @@ window#waybar {
 }
 
 tooltip {
-    background: rgba(30, 30, 30, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     color: #ffffff;
