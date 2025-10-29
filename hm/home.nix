@@ -55,6 +55,7 @@ in
     matugen
     swww
     waybar
+    waybar-mpris
     # new
   ];
 

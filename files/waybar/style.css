@@ -1,0 +1,77 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "Maple Mono", monospace;
+    font-size: 18px;
+    font-weight: bold;
+    min-height: 0;
+}
+
+/* All icons are nf-fa */
+
+window#waybar {
+    background: transparent;
+}
+
+#workspaces,
+#window,
+#clock,
+#battery,
+#network,
+#pulseaudio,
+#mpris,
+#tray {
+    color: #ffffff;
+    background: transparent;
+    padding: 0 1rem;
+}
+
+#tray {
+    padding-right: 1.8rem;
+}
+
+#workspaces button {
+    color: rgba(255, 255, 255, 0.7);
+    background: transparent;
+}
+
+#workspaces button.active {
+    color: #ffffff;
+}
+
+#workspaces button:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#window {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+}
+
+#clock {
+    font-weight: 500;
+}
+
+#battery.charging {
+    color: #a6e3a1;
+}
+
+#battery.warning:not(.charging) {
+    color: #fab387;
+}
+
+#battery.critical:not(.charging) {
+    color: #f38ba8;
+}
+
+tooltip {
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #ffffff;
+}
+
+tooltip label {
+    color: #ffffff;
+}
