@@ -1,0 +1,7 @@
+
+[template]
+name = "Nix"
+description = "New template"
+alias = []      # Alias' for initx
+commands = []   # Commands to run after copying files (probably do git)
+ignore = []     # Files to add to .gitignore (will create if needed)

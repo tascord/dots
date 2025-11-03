@@ -11,7 +11,8 @@
         "hyprpanel": "~/.config/hyprpanel/",
         "ghostty": "~/.config/ghostty/",
         "rofi": "~/.config/rofi",
-        "waybar": "~/.config/waybar/"
+        "waybar": "~/.config/waybar/",
+        "templates": "~/.config/templates/"
     },
     "loose_files": [
         ".gitconfig"
