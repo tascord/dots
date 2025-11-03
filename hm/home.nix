@@ -27,7 +27,6 @@ in
   home.file = builtins.listToAttrs (mappedFiles ++ looseFiles);
 
   home.packages = with pkgs; [
-    hyprpanel
     rofi
     pywal
     neovim
@@ -58,6 +57,9 @@ in
     waybar-mpris
     waybar-lyric
     wl-clip-persist
+    whitesur-cursors
+    nixfmt
+    wired
     # new
   ];
 

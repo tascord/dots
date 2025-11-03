@@ -16,3 +16,5 @@ window-theme = system
 clipboard-trim-trailing-spaces = true
 keybind = global:super+grave_accent=toggle_quick_terminal
 custom-shader = "/home/flora/.config/ghostty/cursor.glsl"
+
+window-inherit-working-directory = false

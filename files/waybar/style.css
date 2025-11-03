@@ -13,10 +13,6 @@ window#waybar {
     background: transparent;
 }
 
-.lyric {
-    color: #ffffff !important;
-}
-
 #workspaces,
 #window,
 #clock,
