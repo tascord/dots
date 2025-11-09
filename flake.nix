@@ -6,14 +6,15 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     zen-browser.url = "github:tascord/zen-nix";
     initx.url = "github:tascord/initx";
-    plymouth-theme.url = "path:/home/flora/dots/flakes/plymouth-theme-custom";
+    plymouth-theme.url = "path:/home/flora/.dots/flakes/plymouth-theme-custom";
+    overlay.url = "path:/home/flora/Projects/overlay";
     vicinae = {
       url = "github:vicinaehq/vicinae";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, zen-browser, initx, vicinae, ... }: 
+  outputs = inputs@{ self, nixpkgs, zen-browser, initx, vicinae, overlay, ... }: 
   let system = "x86_64-linux"; in {
     nixosConfigurations.floramobile = nixpkgs.lib.nixosSystem {
       specialArgs = {
@@ -34,6 +35,7 @@
             zen-browser.packages.x86_64-linux.default
             vicinae.packages.x86_64-linux.default
             initx.packages.x86_64-linux.default
+            overlay.packages.x86_64-linux.default
           ];
         }
 

@@ -60,6 +60,8 @@ in
     whitesur-cursors
     nixfmt
     wired
+    obsidian
+    wdisplays
     # new
   ];
 

@@ -8,7 +8,6 @@
         "fonts": "~/.local/share/fonts",
         "wal_templates": "~/.config/wal/templates",
         "hypr": "~/.config/hypr/",
-        "hyprpanel": "~/.config/hyprpanel/",
         "ghostty": "~/.config/ghostty/",
         "rofi": "~/.config/rofi",
         "waybar": "~/.config/waybar/",

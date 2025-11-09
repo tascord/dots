@@ -24,6 +24,7 @@ window#waybar {
 #tray,
 #custom-ly {
     color: #ffffff;
+    text-shadow: 2px 2px 4px #000000;
     background: transparent;
     padding: 0 1rem;
 }

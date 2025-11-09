@@ -1,0 +1,7 @@
+
+[template]
+name = "Nuxt"
+description = "Web template for nuxt"
+alias = ["web"] # Alias' for initx
+commands = ["git init ."]   # Commands to run after copying files (probably do git)
+ignore = []     # Files to add to .gitignore (will create if needed)
