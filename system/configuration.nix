@@ -48,8 +48,8 @@
     fcitx5.waylandFrontend = true;
     fcitx5.addons = with pkgs; [
       fcitx5-gtk
-      fcitx5-configtool
-      fcitx5-with-addons
+      qt6Packages.fcitx5-configtool
+      qt6Packages.fcitx5-with-addons
       fcitx5-mozc
     ];
   };
@@ -143,6 +143,7 @@
     hyprlandPlugins.hyprexpo
   ];
 
+  services.tailscale.enable = true;
   home-manager.backupFileExtension = "backup";
   services.openssh.enable = true;
   networking.firewall.enable = true;

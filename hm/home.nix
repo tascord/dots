@@ -62,13 +62,19 @@ in
     wired
     obsidian
     wdisplays
+    tigervnc
+    ollama
+    pkgs.nixfmt-rfc-style
+    remmina
+    ardour
+    udiskie
     # new
   ];
 
   programs.direnv.enable = true;
   services.picom.enable = true;
   programs.nh.enable = true;
-
+ 
   programs.fish.interactiveShellInit = "set QT_IM_MODULE fcitx; set XMODIFIERS @im=fcitx; eval (ssh-agent -c) > /dev/null; ssh-add ~/.ssh/* &> /dev/null";
   home.stateVersion = "25.05";
 
@@ -142,7 +148,6 @@ in
   };
 
 
-  services.udiskie.enable = true;
   wayland.windowManager.hyprland.systemd.variables = [ "--all" ];
 }
 
