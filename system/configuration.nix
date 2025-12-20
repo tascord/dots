@@ -106,10 +106,21 @@
   };
 
   hardware.bluetooth.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true; # Critical for many Wine apps
+  };
+
   programs.fish.enable = true;
   programs.firefox.enable = true;
   programs.xwayland.enable = true;
   programs.steam.enable = true;
+
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxussers.members = [ "flora" ];
+  virtualisation.virtualbox.host.enableExtensionPack = true;
+  security.rtkit.enable = true;
+  services.pipewire.jack.enable = true;
 
   environment.systemPackages = with pkgs; [
     alacritty
@@ -141,6 +152,9 @@
     nautilus
     xwayland
     hyprlandPlugins.hyprexpo
+    wine-staging
+    winetricks
+    bottles
   ];
 
   services.tailscale.enable = true;
